@@ -15,10 +15,11 @@ class Car(threading.Thread):
         self.bridge = bridge
 
         try:
-            time.sleep(2)
+            time.sleep(1)
         except InterruptedError:
             print('Interrupted Error')
             exit()
+
         except KeyboardInterrupt:
             print('Keyboard Interrupt')
             exit()
@@ -26,5 +27,6 @@ class Car(threading.Thread):
         self.start()
 
     def run(self):
-        print(f'*{self.id}* is waiting to cross the {self.bridge.id}')
-        self.bridge.cross(self.id)
+        print(
+            f'{self.id}-Direction:{self.direction} is waiting to cross the {self.bridge.id}')
+        self.bridge.cross(self)

@@ -3,30 +3,42 @@ import time
 
 
 class Car(threading.Thread):
+    '''Simulates a car - thread trying to cross a bridge'''
 
-    def __init__(self, id, direction, bridge):
+    def __init__(self, type, id, direction, bridge):
         threading.Thread.__init__(self)
+        self.type = type
         self.id = id
         self.direction = direction
-        # if direction == 'South':
-        #     self.direction = 0
-        # else:
-        #     self.direction = 1
         self.bridge = bridge
+
+        self.start()    # Starting the car when the object is created
 
         try:
             time.sleep(1)
         except InterruptedError:
             print('Interrupted Error')
-            exit()
-
+            exit(1)
         except KeyboardInterrupt:
             print('Keyboard Interrupt')
-            exit()
+            exit(1)
 
-        self.start()
+    def car_side(self):
+        '''Prints a car is waiting, on the correct side depending on the car.'''
+
+        if self.direction == 'West':
+            print(f'{self.type}-{self.id} is waiting')
+        elif self.direction == 'East':
+            print(f'\t\t\t\t\t\t{self.type}-{self.id} is waiting')
 
     def run(self):
-        print(
-            f'{self.id}-Direction:{self.direction} is waiting to cross the {self.bridge.id}')
-        self.bridge.cross(self)
+        if self.bridge.id == 'Unsafe-Bridge' or self.bridge.id == 'Safe-Bridge':
+            self.car_side()
+            self.bridge.cross(self)
+        elif self.bridge.id == 'Fair-Bridge':
+            self.car_side()
+
+            if self.type == 'BlueCar':
+                self.bridge.blue_crossing(self)
+            else:
+                self.bridge.red_crossing(self)

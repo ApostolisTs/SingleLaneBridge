@@ -136,7 +136,10 @@ class AdaptedBridge(Bridge):
 
             with self.red_cond:
                 # If the red cars that are waiting are more
-                # than the blue cars let red cars cross the bridge
+                # than the blue cars let red cars cross the bridge.
+                # If the blue cars waiting are equal to the red
+                # cars waiting the side that already has priority
+                # will cross the bridge.
                 if self.reds_waiting > self.blues_waiting:
                     self.red_turn = True
                     self.red_cond.notify_all()
@@ -162,6 +165,9 @@ class AdaptedBridge(Bridge):
             with self.blue_cond:
                 # If the blue cars that are waiting are more
                 # than the red cars let blue cars cross the bridge
+                # If the blue cars waiting are equal to the red
+                # cars waiting the side that already has priority
+                # will cross the bridge.
                 if self.blues_waiting > self.reds_waiting:
                     self.blue_turn = True
                     self.blue_cond.notify_all()
